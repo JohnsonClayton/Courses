@@ -4,7 +4,8 @@ from Move import Move
 from State import State
 
 '''This is what I designed to have the AI work'''
-
+#NOTE THAT THIS NO LONGER WORKS WITH THE UPDATED GAME
+#THE MOST RECENT VERSION IS THE MinMaxVsRandomGamePlay and its components
 class Agent:
 	
 	def __init__(self):

@@ -76,12 +76,13 @@ class MinMaxAgent:
             #Choose random spot on gameboard, giving an error every now
             #   and again about 'list' not having attribute 'play' because
             #   it is returning a list sometimes and not other times
-            print("gross")
+            #print("gross")
             board = game.getBoard()
             for row in range(Const.ROWS):
                 for col in range(Const.COLS):
                     if board[row][col] == Const.MARK_NONE:
                         bestPlayable.append([row, col])
                         spot = 0
+                        
         #print(bestPlayable[spot])
         return bestPlayable[spot]

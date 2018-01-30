@@ -37,9 +37,27 @@ class GamePlay:
             move.play(game)
         else:
             raise ValueError("invalid game state (" + Const.stateStr(game.getState()) + ")")
-
+            
+    def printB(self, game):
+        board=game.getBoard()
+        str1 = []
+        for col in range(Const.COLS):
+            for row in range(Const.ROWS):
+                if board[col][row] == Const.MARK_NONE:
+                    str1.append(" _ ")
+                elif board[col][row] == Const.MARK_O:
+                    str1.append(" O ")
+                elif board[col][row] == Const.MARK_X:
+                    str1.append(" X ")
+            print(str1[0] + " " + str1[1] + " " + str1[2])
+            str1=[]
+            print("\n")
+    
+            
     def play(self):
         game = self.getGame()
         while not game.over():
             self.turn()
+            self.printB(game)
+            print("\n\n")
         print (Const.stateStr(game.getState()))
