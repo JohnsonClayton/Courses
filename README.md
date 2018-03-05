@@ -9,3 +9,4 @@ OOP:
 AI:
     Random Agent https://github.com/JohnsonClayton/Courses/tree/master/AI/FirstAIPy/RandomAgent.py
     MinMax Agent https://github.com/JohnsonClayton/Courses/blob/master/AI/FirstAIPy/MinMaxAgent.py
+    DenialOfService Gradient Descent https://github.com/JohnsonClayton/Courses/blob/master/AI/DenialOfService.java
