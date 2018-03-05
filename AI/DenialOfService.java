@@ -8,6 +8,8 @@
  *    Traffic is mimicked by T(x) = 6 * sin((x-6)/2.4pi) + 1
  *  and Admin Hours are mimicked by H(y) = cos(2y/2.4pi)^2
  *
+ *    The Optimal Hours with this model *which isn't tested or made to reflect any real server* appear
+ *   to be around 5pm or 17:00 hours
  */   
 package gradientdescent;
 
