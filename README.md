@@ -6,7 +6,8 @@ OOP:
     Java Object and Extension https://github.com/JohnsonClayton/Courses/tree/master/OOP/simpleObjectJava/WaterTank.java/src/watertank/java
     Java Object and Extension Tests https://github.com/JohnsonClayton/Courses/tree/master/OOP/simpleObjectJava/WaterTank.java/test/watertank/java
     C++ Object/Diamond of Death 
-    Design Pattern (Facade): https://github.com/JohnsonClayton/Courses/tree/master/OOP
+    Design Pattern (Facade): https://github.com/JohnsonClayton/Courses/tree/master/OOP/OOP%20Design%20Patterns/Facade
+    Design Pattern (State): https://github.com/JohnsonClayton/Courses/tree/master/OOP/OOP%20Design%20Patterns/State
 AI:
     Random Agent https://github.com/JohnsonClayton/Courses/tree/master/AI/FirstAIPy/RandomAgent.py
     MinMax Agent https://github.com/JohnsonClayton/Courses/blob/master/AI/FirstAIPy/MinMaxAgent.py
