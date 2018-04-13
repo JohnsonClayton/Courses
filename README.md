@@ -1,5 +1,6 @@
 # Courses
 This is where I am putting files for professors to access for assignments
+Also, sorry about the formatting. If I didn't do it like this, the links would be all over the place and it wasn't readable at all.
 
 OOP:
 
