@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Personal Scheduler</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="js/jquery.min.js"></script>
+        <link rel="stylesheet" href="css/jquery-ui.css">
+        <script src="js/jquery-ui.min.js"></script>    
+        <script src="js/bootstrap.min.js"></script> 
+        <link rel="stylesheet" href="css/concept.css">
+    </head>
+    <script>
+        class Day {
+            constructor(newDate) {
+                this.date = newDate;
+                //eventarr[0] represents from midnight to 1am, eventarr[13] represents from 1pm to 2pm
+                this.eventtimearr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                this.eventnamearr = ["","","","","","","","","","","","","","","","","","","","","","",""];
+            }
+            showDay() {
+                $('#added').empty();
+                $('p').remove('.added');
+
+                $('#dayInfoContainer').append(`<div id="added"><h1>May ${this.date}, 2018</h1>`);
+                for(let i = 0; i < 13; i+=1) {
+                    if(this.eventtimearr[i]) {
+                        $('#dayInfoContainer').append(`<p class="added">${i + 1} am :&#09; <span class="smCalendar">${this.eventnamearr[i]}</span></p>`);
+                    }
+                }
+                for(let i = 13; i < 24; i+=1) {
+                    if(this.eventtimearr[i]) {
+                        $('#dayInfoContainer').append(`<p class="added">${i - 12} pm :&#09; <span class="smCalendar">${this.eventnamearr[i]}</span></p>`);
+                    }
+                }
+                $('#dayInfoContainer').append(`</div>`);
+            }
+            addEvent(name="", starttime=0, endtime=0) {
+                alert(starttime + ' ' +endtime);
+                for(let i = starttime; i < endtime; i+=1) {
+                    if (this.eventnamearr[i] != "") {
+                        this.eventnamearr[i] += ' and ' + name;
+                    }
+                    else {
+                        this.eventtimearr[i] = 1;
+                        this.eventnamearr[i] = name;
+                    }
+                }
+            }
+        }
+                
+        month = [];
+        for(let i = 1; i < 32; i += 1) {
+            let temp = new Day(i);
+            month.push(temp);
+        }
+        //console.log(month);
+        function showDays(day) {
+            day -= 1
+            alert(day);
+            month[day].showDay();
+        }
+        
+        class Event {
+            constructor(newName, newStart, newEnd) {
+                //Assumes today at this time
+                this.name = newName;
+                this.start = newStart;
+                this.end = newEnd;
+            }
+        }
+        class OneTimeEvent extends Event{
+            constructor(newName, newStart, newEnd, newDay, newMonth, newYear) {
+                super(newName, newStart, newEnd);
+                this.day = newDay;
+                this.month = newMonth;
+                this.year = newYear;
+            }
+            addToCalendar() {
+                starttime = Number(this.start.split(' ')[0]);
+                endtime = Number(this.end.split(' ')[0]);
+                if(this.start.split(' ')[1] == 'pm' && starttime != 12) {
+                    //Add to 24hr clock
+                    //alert("24hrs section reached");
+                    starttime += 12;
+                    endtime += 12;
+                    month[Number(this.day)-1].addEvent(this.name, starttime, endtime);
+                    month[Number(this.day)-1].showDay();
+                    //alert("24hrs section passed");                    
+                }
+                else {
+                    //Keep as normal index
+                    if(this.end.split(' ')[1] == 'pm') {
+                        endtime += 12;
+                    }
+                    else {
+                        endtime -= 1;
+                    }
+                    starttime -= 1;
+                    
+                    month[Number(this.day)-1].addEvent(this.name, starttime, endtime);
+                    month[Number(this.day)-1].showDay();
+                }
+            }
+        }
+        class RepeatingEvent extends Event{
+            constructor(newName, newStart, newEnd, newDay, newMonth, newYear, newRepeats) {
+                super(newName, newStart, newEnd);
+                this.day = newDay;
+                this.month = newMonth;
+                this.year = newYear;
+                this.repeats = newRepeats;
+            }
+            repeatEvent() {
+                //Put on multiple days based on how repeats
+            }
+        }
+    </script>
+    <body>
+        <div id='container'>
+            <div id='left' style='width:25%;height:100%;float:left;background-color:#1abc9c;'>
+                <label>Add Event: <button id='add' class='btn btn-success'>+</button></label><br/>
+                <div id='addEventInfo'  style='display:none;'>
+                    <label>Event Name: <input type='text' id='eventname'></label><br/>
+                    <div class="form-group">
+                        <div class="space">
+                            <label for="day">Day:</label>
+                            <select id="day">
+                                <option>01</option>
+                                <option>02</option>
+                                <option>03</option>
+                                <option>04</option>
+                                <option>05</option>
+                                <option>06</option>
+                                <option>07</option>
+                                <option>08</option>
+                                <option>09</option>
+                                <option>10</option>
+                                <option>11</option>
+                                <option>12</option>
+                                <option>13</option>
+                                <option>14</option>
+                                <option>15</option>
+                                <option>16</option>
+                                <option>17</option>
+                                <option>18</option>
+                                <option>19</option>
+                                <option>20</option>
+                                <option>21</option>
+                                <option>22</option>
+                                <option>23</option>
+                                <option>24</option>
+                                <option>25</option>
+                                <option>26</option>
+                                <option>27</option>
+                                <option>28</option>
+                                <option>29</option>
+                                <option>30</option>
+                                <option>31</option>
+                            </select>
+                            <label for="month">Month:</label>
+                            <select id="month">
+                                <option>January</option>
+                                <option>February</option>
+                                <option>March</option>
+                                <option>April</option>
+                                <option>May</option>
+                                <option>June</option>
+                                <option>July</option>
+                                <option>August</option>
+                                <option>September</option>
+                                <option>October</option>
+                                <option>November</option>
+                                <option>December</option>
+                            </select>
+                        </div>
+                        <div class="space">
+                            <label for="starttime">Start:</label>
+                            <select id="starttime">
+                                <option>12 am</option>
+                                <option>1 am</option>
+                                <option>2 am</option>
+                                <option>3 am</option>
+                                <option>4 am</option>
+                                <option>5 am</option>
+                                <option>6 am</option>
+                                <option>7 am</option>
+                                <option>8 am</option>
+                                <option>9 am</option>
+                                <option>10 am</option>
+                                <option>11 am</option>
+                                <option>12 pm</option>
+                                <option>1 pm</option>
+                                <option>2 pm</option>
+                                <option>3 pm</option>
+                                <option>4 pm</option>
+                                <option>5 pm</option>
+                                <option>6 pm</option>
+                                <option>7 pm</option>
+                                <option>8 pm</option>
+                                <option>9 pm</option>
+                                <option>10 pm</option>
+                                <option>11 pm</option>
+                            </select>
+                            <label for="endtime">End:</label>
+                            <select id="endtime">
+                                <option>1 am</option>
+                                <option>2 am</option>
+                                <option>3 am</option>
+                                <option>4 am</option>
+                                <option>5 am</option>
+                                <option>6 am</option>
+                                <option>7 am</option>
+                                <option>8 am</option>
+                                <option>9 am</option>
+                                <option>10 am</option>
+                                <option>11 am</option>
+                                <option>12 pm</option>
+                                <option>1 pm</option>
+                                <option>2 pm</option>
+                                <option>3 pm</option>
+                                <option>4 pm</option>
+                                <option>5 pm</option>
+                                <option>6 pm</option>
+                                <option>7 pm</option>
+                                <option>8 pm</option>
+                                <option>9 pm</option>
+                                <option>10 pm</option>
+                                <option>11 pm</option>
+                                <option>12 am</option>
+                            </select>
+                        </div>
+                        <br/>
+                        <div class="space">
+                            <label class="radio-inline"><input type="radio" name="optradio" id="once" autocomplete="off">One Time</label>
+                            <label class="radio-inline"><input type="radio" name="optradio" id="rep" autocomplete="off">Repeating</label>
+                        </div>
+                        <div id="repeatingDetails" style="display:none;">
+                            <label for="repDetails">Repeats:</label>
+                            <select id="repDetails" >
+                                <option>Daily</option>
+                                <option>Bi-Daily</option>
+                                <option>Weekly</option>
+                                <option>Bi-Weekly</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br/>
+                    <button id='submit' class='btn btn-primary' style='float:right'>Add to Calendar</button>
+                </div>
+            </div>
+            <div id='right' style='width:75%;float:right;height:100%;background-color:#1abc9c;'>
+            </div>
+        </div>
+    </body>
+    <script>
+        $(document).ready(function() {
+            $('#rep').click(function() {
+                //alert('repeat clicked');
+                $('#repeatingDetails').css('display', 'block');
+                });
+            $('#once').click(function() {
+                //alert('repeat clicked');
+                $('#repeatingDetails').css('display', 'none');
+                });
+            $('#add').click(function() {
+                $('#addEventInfo').css('display','block');
+                
+                });
+            $('#submit').click(function() {
+                //class OneTimeEvent extends Event{
+                    //constructor(newName, newStart, newEnd, newDay, newMonth, newYear) {
+                        //super.Event(newName, newStart, newEnd);
+                        //this.day = newDay;
+                        //this.month = newMonth;
+                        //this.year = newYear;
+                    //}
+                //}
+               if($('#repeatingDetails:visible').val() == ""){
+                   //Make repeatingevent
+                   let repevent = new RepeatingEvent($('#eventname').val(),$('#starttime').val(), $('#endtime').val(), $('#day').val(), 'May', '2018',$('repDetails').val());
+                   
+                   
+                   //alert(JSON.stringify(repevent));
+               }
+               else {
+                   //Make onetime event
+                   let onceevent = new OneTimeEvent($('#eventname').val(),$('#starttime').val(), $('#endtime').val(), $('#day').val(), 'May', '2018');
+                    onceevent.addToCalendar();
+                    //alert(JSON.stringify(onceevent));
+                    
+               }
+            });
+            $('#right').html(`<div class="month">
+                  <ul>
+                    <li class="prev">&#10094;</li>
+                    <li class="next">&#10095;</li>
+                    <li>May<br><span style="font-size:18px">2018</span></li>
+                  </ul>
+                </div>
+
+                <ul class="weekdays">
+                  <li>Mo</li>
+                  <li>Tu</li>
+                  <li>We</li>
+                  <li>Th</li>
+                  <li>Fr</li>
+                  <li>Sa</li>
+                  <li>Su</li>
+                </ul>
+
+                <ul class="days">
+                  <li><span class="notmonth">29</span></li>
+                  <li><span class="notmonth">30</span></li>
+                  <li onClick="showDays(1);">1</li> <!--Can call the display function from here and give it the value-->
+                  <li onClick="showDays(2);">2</li>
+                  <li onClick="showDays(3);">3</li>
+                  <!--Replace with variable using <li> dollarsign{tester}</li>-->
+                  <li onClick="showDays(4);">4</li>
+                  <li onClick="showDays(5);">5</li>
+                  <li onClick="showDays(6);">6</li>
+                  <li onClick="showDays(7);">7</li>
+                  <li onClick="showDays(8);">8</li>
+                  <li onClick="showDays(9);">9</li>
+                  <!--<li><span class="active">10</span></li>-->
+                  <li onClick="showDays(10);">10</li>
+                  <li onClick="showDays(11);">11</li>
+                  <li onClick="showDays(12);">12</li>
+                  <li onClick="showDays(13);">13</li>
+                  <li onClick="showDays(14);">14</li>
+                  <li onClick="showDays(15);">15</li>
+                  <li onClick="showDays(16);">16</li>
+                  <li onClick="showDays(17);">17</li>
+                  <li onClick="showDays(18);">18</li>
+                  <li onClick="showDays(19);">19</li>
+                  <li onClick="showDays(20);">20</li>
+                  <li onClick="showDays(21);">21</li>
+                  <li onClick="showDays(22);">22</li>
+                  <li onClick="showDays(23);">23</li>
+                  <li onClick="showDays(24);">24</li>
+                  <li onClick="showDays(25);">25</li>
+                  <li onClick="showDays(26);">26</li>
+                  <li onClick="showDays(27);">27</li>
+                  <li onClick="showDays(28);">28</li>
+                  <li onClick="showDays(29);">29</li>
+                  <li onClick="showDays(30);">30</li>
+                  <li onClick="showDays(31);">31</li>
+                  <li><span class="notmonth">1</span></li>
+                  <li><span class="notmonth">2</span></li>
+                </ul> 
+                <div id='dayInfoContainer'></div>`);
+                anothertest = `<div><h1>Hello!</h1><p>Hello again!</p></div>`;
+                //$('#dayInfoContainer').append(anothertest);
+                                
+                
+            //alert("Loaded");
+        });
+    </script>
+</html>
