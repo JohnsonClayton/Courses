@@ -10,6 +10,65 @@
         <link rel="stylesheet" href="css/concept.css">
     </head>
     <script>
+        monthDisplay = `<div class="month">
+                  <ul>
+                    <li class="prev">&#10094;</li>
+                    <li class="next">&#10095;</li>
+                    <li>May<br><span style="font-size:18px">2018</span></li>
+                  </ul>
+                </div>
+
+                <ul class="weekdays">
+                  <li>Mo</li>
+                  <li>Tu</li>
+                  <li>We</li>
+                  <li>Th</li>
+                  <li>Fr</li>
+                  <li>Sa</li>
+                  <li>Su</li>
+                </ul>
+
+                <ul class="days">
+                  <li><span class="notmonth">29</span></li>
+                  <li><span class="notmonth">30</span></li>
+                  <li onClick="showDays(1);">1</li> <!--Can call the display function from here and give it the value-->
+                  <li onClick="showDays(2);">2</li>
+                  <li onClick="showDays(3);">3</li>
+                  <!--Replace with variable using <li> dollarsign{tester}</li>-->
+                  <li onClick="showDays(4);">4</li>
+                  <li onClick="showDays(5);">5</li>
+                  <li onClick="showDays(6);">6</li>
+                  <li onClick="showDays(7);">7</li>
+                  <li onClick="showDays(8);">8</li>
+                  <li onClick="showDays(9);">9</li>
+                  <!--<li><span class="active">10</span></li>-->
+                  <li onClick="showDays(10);">10</li>
+                  <li onClick="showDays(11);">11</li>
+                  <li onClick="showDays(12);">12</li>
+                  <li onClick="showDays(13);">13</li>
+                  <li onClick="showDays(14);">14</li>
+                  <li onClick="showDays(15);">15</li>
+                  <li onClick="showDays(16);">16</li>
+                  <li onClick="showDays(17);">17</li>
+                  <li onClick="showDays(18);">18</li>
+                  <li onClick="showDays(19);">19</li>
+                  <li onClick="showDays(20);">20</li>
+                  <li onClick="showDays(21);">21</li>
+                  <li onClick="showDays(22);">22</li>
+                  <li onClick="showDays(23);">23</li>
+                  <li onClick="showDays(24);">24</li>
+                  <li onClick="showDays(25);">25</li>
+                  <li onClick="showDays(26);">26</li>
+                  <li onClick="showDays(27);">27</li>
+                  <li onClick="showDays(28);">28</li>
+                  <li onClick="showDays(29);">29</li>
+                  <li onClick="showDays(30);">30</li>
+                  <li onClick="showDays(31);">31</li>
+                  <li><span class="notmonth">1</span></li>
+                  <li><span class="notmonth">2</span></li>
+                </ul> 
+                <div id='dayInfoContainer'></div>`;
+                
         class Day {
             constructor(newDate) {
                 this.date = newDate;
@@ -18,24 +77,24 @@
                 this.eventnamearr = ["","","","","","","","","","","","","","","","","","","","","","",""];
             }
             showDay() {
-                $('#added').empty();
+                $('#added').remove();
                 $('p').remove('.added');
 
                 $('#dayInfoContainer').append(`<div id="added"><h1>May ${this.date}, 2018</h1>`);
                 for(let i = 0; i < 13; i+=1) {
                     if(this.eventtimearr[i]) {
-                        $('#dayInfoContainer').append(`<p class="added">${i + 1} am :&#09; <span class="smCalendar">${this.eventnamearr[i]}</span></p>`);
+                        $('#dayInfoContainer').append(`<p class="added">${i + 1} am : <span class="smCalendar">${this.eventnamearr[i]}</span></p>`);
                     }
                 }
                 for(let i = 13; i < 24; i+=1) {
                     if(this.eventtimearr[i]) {
-                        $('#dayInfoContainer').append(`<p class="added">${i - 12} pm :&#09; <span class="smCalendar">${this.eventnamearr[i]}</span></p>`);
+                        $('#dayInfoContainer').append(`<p class="added">${i - 12} pm : <span class="smCalendar">${this.eventnamearr[i]}</span></p>`);
                     }
                 }
                 $('#dayInfoContainer').append(`</div>`);
             }
             addEvent(name="", starttime=0, endtime=0) {
-                alert(starttime + ' ' +endtime);
+                //alert(starttime + ' ' +endtime);
                 for(let i = starttime; i < endtime; i+=1) {
                     if (this.eventnamearr[i] != "") {
                         this.eventnamearr[i] += ' and ' + name;
@@ -45,6 +104,29 @@
                         this.eventnamearr[i] = name;
                     }
                 }
+                //Change color of that day on the calendar
+                let calendar = monthDisplay;
+                
+                calendar = calendar.split('\n');
+                let index = -1;
+                let inspoint = 0;
+                for(let i = 0; i < calendar.length; i+=1) {
+                    if(calendar[i] == `                  <li onClick=\"showDays(${this.date});\">${this.date}</li>`) {
+                        //alert(calendar[i]);
+                        index = i;
+                    }
+                }
+                
+                inspoint = calendar[index].search('>');
+                //alert(inspoint);
+                calendar[index] = calendar[index].slice(0, inspoint + 1) + `<span class="active">${this.date}</span></li>`;
+                //alert(calendar[index]);
+                var newCalendar = calendar.join('\n');
+                //newCalendar = newCalendar.replace(',','');
+                monthDisplay = newCalendar;
+                //console.log(newCalendar);
+                $('#right').empty();
+                $('#right').append(newCalendar);
             }
         }
                 
@@ -56,7 +138,7 @@
         //console.log(month);
         function showDays(day) {
             day -= 1
-            alert(day);
+            //alert(day);
             month[day].showDay();
         }
         
@@ -158,7 +240,7 @@
                                 <option>31</option>
                             </select>
                             <label for="month">Month:</label>
-                            <select id="month">
+                            <select id="month" disabled>
                                 <option>January</option>
                                 <option>February</option>
                                 <option>March</option>
