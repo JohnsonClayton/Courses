@@ -1,3 +1,28 @@
+<!--
+    @ClaytonJohnson
+    cpjohnson@mavs.coloradomesa.edu
+    Object-Oriented Final Project
+    Dr. Warren MacEvoy
+    
+    Explanation: This program is designed to be a personal planner to make ones schedule. The program is object-oriented as
+opposed to object-based due to the fact that the event types are inherited from the super Event class. They inherit elements 
+and modify the methods from the Event class. Sidenote: The page isn't perfect and I've used a couple global variables to simplify
+the program since the point of it was to demonstrate object-orientation, not javascript/html5 proficiency. I would like to extend
+this program to year-long events or scheduling and make it more user-friendly/desirable.
+    I actually intend on working on this project more upon the end of the school year to get it closer to what I want, which is a 
+re-do of the course registration system we have on campus right now (Which may end up being more object-based than oriented). 
+Let me know if there is anything you'd like to see from this program or if I should change directions on the project.
+
+
+    TLDR; Class Event             
+             /   \
+      One-Time    Repeating
+      
+      Event Classes work with Day Classes
+      Month = Sum of Days
+      Project will be improved after school year, just needed to throw stuff together for OOP Final rq
+      
+-->
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,6 +35,7 @@
         <link rel="stylesheet" href="css/concept.css">
     </head>
     <script>
+        //This variable represents the month and how it is displayed, it changes throughout program
         monthDisplay = `<div class="month">
                   <ul>
                     <li class="prev">&#10094;</li>
@@ -17,7 +43,6 @@
                     <li>May<br><span style="font-size:18px">2018</span></li>
                   </ul>
                 </div>
-
                 <ul class="weekdays">
                   <li>Mo</li>
                   <li>Tu</li>
@@ -27,21 +52,18 @@
                   <li>Sa</li>
                   <li>Su</li>
                 </ul>
-
                 <ul class="days">
                   <li><span class="notmonth">29</span></li>
                   <li><span class="notmonth">30</span></li>
-                  <li onClick="showDays(1);">1</li> <!--Can call the display function from here and give it the value-->
+                  <li onClick="showDays(1);">1</li>
                   <li onClick="showDays(2);">2</li>
                   <li onClick="showDays(3);">3</li>
-                  <!--Replace with variable using <li> dollarsign{tester}</li>-->
                   <li onClick="showDays(4);">4</li>
                   <li onClick="showDays(5);">5</li>
                   <li onClick="showDays(6);">6</li>
                   <li onClick="showDays(7);">7</li>
                   <li onClick="showDays(8);">8</li>
                   <li onClick="showDays(9);">9</li>
-                  <!--<li><span class="active">10</span></li>-->
                   <li onClick="showDays(10);">10</li>
                   <li onClick="showDays(11);">11</li>
                   <li onClick="showDays(12);">12</li>
@@ -79,7 +101,6 @@
             showDay() {
                 $('#added').remove();
                 $('p').remove('.added');
-
                 $('#dayInfoContainer').append(`<div id="added"><h1>May ${this.date}, 2018</h1>`);
                 for(let i = 0; i < 13; i+=1) {
                     if(this.eventtimearr[i]) {
@@ -94,7 +115,6 @@
                 $('#dayInfoContainer').append(`</div>`);
             }
             addEvent(name="", starttime=0, endtime=0) {
-                //alert(starttime + ' ' +endtime);
                 for(let i = starttime; i < endtime; i+=1) {
                     if (this.eventnamearr[i] != "") {
                         this.eventnamearr[i] += ' and ' + name;
@@ -106,39 +126,30 @@
                 }
                 //Change color of that day on the calendar
                 let calendar = monthDisplay;
-                
                 calendar = calendar.split('\n');
                 let index = -1;
                 let inspoint = 0;
                 for(let i = 0; i < calendar.length; i+=1) {
                     if(calendar[i] == `                  <li onClick=\"showDays(${this.date});\">${this.date}</li>`) {
-                        //alert(calendar[i]);
                         index = i;
                     }
                 }
-                
                 inspoint = calendar[index].search('>');
-                //alert(inspoint);
                 calendar[index] = calendar[index].slice(0, inspoint + 1) + `<span class="active">${this.date}</span></li>`;
-                //alert(calendar[index]);
                 var newCalendar = calendar.join('\n');
-                //newCalendar = newCalendar.replace(',','');
                 monthDisplay = newCalendar;
-                //console.log(newCalendar);
                 $('#right').empty();
                 $('#right').append(newCalendar);
             }
         }
-                
+        //The basic idea here is that a month is the summation of all of its days
         month = [];
         for(let i = 1; i < 32; i += 1) {
             let temp = new Day(i);
             month.push(temp);
         }
-        //console.log(month);
         function showDays(day) {
             day -= 1
-            //alert(day);
             month[day].showDay();
         }
         
@@ -162,12 +173,10 @@
                 endtime = Number(this.end.split(' ')[0]);
                 if(this.start.split(' ')[1] == 'pm' && starttime != 12) {
                     //Add to 24hr clock
-                    //alert("24hrs section reached");
                     starttime += 12;
                     endtime += 12;
                     month[Number(this.day)-1].addEvent(this.name, starttime, endtime);
                     month[Number(this.day)-1].showDay();
-                    //alert("24hrs section passed");                    
                 }
                 else {
                     //Keep as normal index
@@ -192,9 +201,59 @@
                 this.year = newYear;
                 this.repeats = newRepeats;
             }
-            repeatEvent() {
-                //Put on multiple days based on how repeats
+            
+            addToCalendar() {
+                //Put event on multiple days based on this.repeats value
+                starttime = Number(this.start.split(' ')[0]);
+                endtime = Number(this.end.split(' ')[0]);
+                if(this.start.split(' ')[1] == 'pm' && starttime != 12) {
+                    //Add to 24hr clock
+                    starttime += 12;
+                    endtime += 12;
+                    month[Number(this.day)-1].addEvent(this.name, starttime, endtime);
+                    month[Number(this.day)-1].showDay();
+                }
+                else {
+                    //Keep as normal index
+                    if(this.end.split(' ')[1] == 'pm') {
+                        endtime += 12;
+                    }
+                    else {
+                        endtime -= 1;
+                    }
+                    starttime -= 1;
+                }
+                
+                if(this.repeats ==  'Daily') {
+                    //Repeat daily
+                    for(let i = Number(this.day); i < 32; i+=1) {
+                        month[i-1].addEvent(this.name, starttime, endtime);
+                    }
+                }
+                else if(this.repeats == 'Everyother Day') {
+                    //Repeat everyother day
+                    for(let i = Number(this.day); i < 32; i+=2) {
+                        month[i-1].addEvent(this.name, starttime, endtime);
+                    }
+                }
+                else if(this.repeats == 'Weekly') {
+                    //Repeat weekly
+                    for(let i = Number(this.day); i < 32; i+=7) {
+                        month[i-1].addEvent(this.name, starttime, endtime);
+                    }
+                }
+                else if(this.repeats == 'Bi-Weekly') {
+                    //Repeat biweekly
+                    for(let i = Number(this.day); i < 32; i+=14) {
+                        month[i-1].addEvent(this.name, starttime, endtime);
+                    }
+                }
+                else {
+                    //Throw error because it shouldn't ever get here
+                    alert("Repeat-type '"+ this.repeats +"' not recognized");
+                }
             }
+            
         }
     </script>
     <body>
@@ -320,7 +379,7 @@
                             <label for="repDetails">Repeats:</label>
                             <select id="repDetails" >
                                 <option>Daily</option>
-                                <option>Bi-Daily</option>
+                                <option>Everyother Day</option>
                                 <option>Weekly</option>
                                 <option>Bi-Weekly</option>
                             </select>
@@ -337,41 +396,28 @@
     <script>
         $(document).ready(function() {
             $('#rep').click(function() {
-                //alert('repeat clicked');
                 $('#repeatingDetails').css('display', 'block');
                 });
             $('#once').click(function() {
-                //alert('repeat clicked');
                 $('#repeatingDetails').css('display', 'none');
                 });
             $('#add').click(function() {
                 $('#addEventInfo').css('display','block');
-                
                 });
             $('#submit').click(function() {
-                //class OneTimeEvent extends Event{
-                    //constructor(newName, newStart, newEnd, newDay, newMonth, newYear) {
-                        //super.Event(newName, newStart, newEnd);
-                        //this.day = newDay;
-                        //this.month = newMonth;
-                        //this.year = newYear;
-                    //}
-                //}
                if($('#repeatingDetails:visible').val() == ""){
                    //Make repeatingevent
-                   let repevent = new RepeatingEvent($('#eventname').val(),$('#starttime').val(), $('#endtime').val(), $('#day').val(), 'May', '2018',$('repDetails').val());
-                   
-                   
-                   //alert(JSON.stringify(repevent));
+                   let repevent = new RepeatingEvent($('#eventname').val(),$('#starttime').val(), $('#endtime').val(), $('#day').val(), 'May', '2018',$('#repDetails').val());
+                   repevent.addToCalendar();
                }
                else {
                    //Make onetime event
                    let onceevent = new OneTimeEvent($('#eventname').val(),$('#starttime').val(), $('#endtime').val(), $('#day').val(), 'May', '2018');
-                    onceevent.addToCalendar();
-                    //alert(JSON.stringify(onceevent));
-                    
+                   onceevent.addToCalendar();                    
                }
             });
+            //This is the right-side of the page
+                //I did not make this, I pulled it from a w3schools example
             $('#right').html(`<div class="month">
                   <ul>
                     <li class="prev">&#10094;</li>
