@@ -11,7 +11,7 @@ OOP:
     C++ Object/Diamond of Death: https://github.com/JohnsonClayton/Courses/tree/master/OOP/C%2B%2B%20Diamond%20of%20Death
     Design Pattern (Facade): https://github.com/JohnsonClayton/Courses/tree/master/OOP/OOP%20Design%20Patterns/Facade%20Design
     Design Pattern (State): https://github.com/JohnsonClayton/Courses/tree/master/OOP/OOP%20Design%20Patterns/State%20Design
-    Final Youtube: http://youtu.be/Xf67JdODNNA
+    Final Youtube: http://youtu.be/ASf9fVi45Uw
 AI:
 
 
