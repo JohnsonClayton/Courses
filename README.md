@@ -1,10 +1,6 @@
 # Courses
 This is where I am putting files for professors to access for assignments
 
-# Java:
-
-# Web Design III:
-
 # OOP:
 1. [Python Object + Test](https://github.com/JohnsonClayton/Courses/tree/master/OOP/simpleObjectPy)
 2. [Java Object and Extension](https://github.com/JohnsonClayton/Courses/tree/master/OOP/simpleObjectJava/WaterTank.java/src/watertank/java)
